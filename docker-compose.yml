@@ -1,11 +1,20 @@
 version: "3"
 services:
-  cockroach:
-    image: otanatcockroach/cockroachdb-custom:v1
+  cockroach_22_1_0:
+    image: prismagraphql/cockroachdb-custom:22.1.0
     restart: always
     command: start-single-node --insecure
     ports:
-      - "5436:26257"
+      - "26257:26257"
+    networks:
+      - databases
+
+  cockroach_21_2_0_patched:
+    image: prismagraphql/cockroachdb-custom:21.2.0-patched
+    restart: always
+    command: start-single-node --insecure
+    ports:
+      - "26258:26257"
     networks:
       - databases
 
@@ -30,12 +39,10 @@ services:
     command: postgres -c 'max_connections=1000'
     environment:
       POSTGRES_PASSWORD: "prisma"
-      PGDATA: "/pgtmpfs9"
     ports:
       - "5431:5432"
     networks:
       - databases
-    tmpfs: /pgtmpfs9:size=4g
 
   postgres10:
     image: postgres:10
@@ -43,12 +50,10 @@ services:
     command: postgres -c 'max_connections=1000'
     environment:
       POSTGRES_PASSWORD: "prisma"
-      PGDATA: "/pgtmpfs10"
     ports:
       - "5432:5432"
     networks:
       - databases
-    tmpfs: /pgtmpfs10:size=4g
 
   postgres11:
     image: postgres:11
@@ -56,12 +61,10 @@ services:
     command: postgres -c 'max_connections=1000'
     environment:
       POSTGRES_PASSWORD: "prisma"
-      PGDATA: "/pgtmpfs11"
     ports:
       - "5433:5432"
     networks:
       - databases
-    tmpfs: /pgtmpfs11:size=4g
 
   postgres12:
     image: postgres:12
@@ -69,12 +72,10 @@ services:
     command: postgres -c 'max_connections=1000'
     environment:
       POSTGRES_PASSWORD: "prisma"
-      PGDATA: "/pgtmpfs12"
     ports:
       - "5434:5432"
     networks:
       - databases
-    tmpfs: /pgtmpfs12:size=4g
 
   postgres13:
     image: postgres:13
@@ -82,17 +83,42 @@ services:
     command: postgres -c 'max_connections=1000'
     environment:
       POSTGRES_PASSWORD: "prisma"
-      PGDATA: "/pgtmpfs13"
     ports:
       - "5435:5432"
     networks:
       - databases
-    tmpfs: /pgtmpfs13:size=4g
+
+  postgres14:
+    image: postgres:14
+    restart: always
+    command: postgres -c 'max_connections=1000'
+    environment:
+      POSTGRES_PASSWORD: "prisma"
+      POSTGRES_HOST_AUTH_METHOD: "md5"
+      POSTGRES_INITDB_ARGS: "--auth-host=md5"
+    ports:
+      - "5437:5432"
+    networks:
+      - databases
+
+  postgres15:
+    image: postgres:15beta3
+    restart: always
+    command: postgres -c 'max_connections=1000'
+    environment:
+      POSTGRES_PASSWORD: "prisma"
+      POSTGRES_HOST_AUTH_METHOD: "md5"
+      POSTGRES_INITDB_ARGS: "--auth-host=md5"
+    ports:
+      - "5438:5432"
+    networks:
+      - databases
 
   mysql-5-6:
     image: mysql:5.6.50
     command: mysqld
     restart: always
+    platform: linux/x86_64
     environment:
       MYSQL_USER: root
       MYSQL_ROOT_PASSWORD: prisma
@@ -107,6 +133,7 @@ services:
     image: mysql:5.7.32
     command: mysqld
     restart: always
+    platform: linux/x86_64
     environment:
       MYSQL_USER: root
       MYSQL_ROOT_PASSWORD: prisma
@@ -118,11 +145,11 @@ services:
     tmpfs: /var/lib/mysql
 
   mysql-8-0:
-    image: mysql:8.0.22
+    image: mysql:8.0.28
     command: mysqld
     restart: always
+    platform: linux/x86_64
     environment:
-      MYSQL_USER: root
       MYSQL_ROOT_PASSWORD: prisma
       MYSQL_DATABASE: prisma
     ports:
@@ -145,7 +172,7 @@ services:
     tmpfs: /var/lib/mariadb
 
   vitess-test-5_7:
-    image: vitess/vttestserver:mysql57@sha256:b1f8eed5d43e3836a65e2cb4b373441a92989bb44af0c352b195f058ce139c08
+    image: vitess/vttestserver:mysql57@sha256:2b132a22d08b3b227d9391f8f58ed7ab5c081ca07bf0f87a0c166729124d360a
     restart: always
     ports:
       - 33577:33577
@@ -157,7 +184,7 @@ services:
       FOREIGN_KEY_MODE: "disallow"
 
   vitess-test-8_0:
-    image: vitess/vttestserver:mysql80@sha256:5fec546e3f2ba50237b78938982a72bf17eacbc97f18ab877774f22d6e2e9682
+    image: vitess/vttestserver:mysql80@sha256:9412e3d51bde38e09c3039090b5c68808e299579f12c79178a4ec316f7831889
     restart: always
     ports:
       - 33807:33807
@@ -169,7 +196,7 @@ services:
       FOREIGN_KEY_MODE: "disallow"
 
   vitess-shadow-5_7:
-    image: vitess/vttestserver:mysql57@sha256:b1f8eed5d43e3836a65e2cb4b373441a92989bb44af0c352b195f058ce139c08
+    image: vitess/vttestserver:mysql57@sha256:2b132a22d08b3b227d9391f8f58ed7ab5c081ca07bf0f87a0c166729124d360a
     restart: always
     ports:
       - 33578:33577
@@ -181,7 +208,7 @@ services:
       FOREIGN_KEY_MODE: "disallow"
 
   vitess-shadow-8_0:
-    image: vitess/vttestserver:mysql80@sha256:5fec546e3f2ba50237b78938982a72bf17eacbc97f18ab877774f22d6e2e9682
+    image: vitess/vttestserver:mysql80@sha256:9412e3d51bde38e09c3039090b5c68808e299579f12c79178a4ec316f7831889
     restart: always
     ports:
       - 33808:33807
@@ -214,25 +241,87 @@ services:
     networks:
       - databases
 
-  mongo4:
+  mssql-2022:
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    restart: always
+    environment:
+      ACCEPT_EULA: "Y"
+      SA_PASSWORD: "<YourStrong@Passw0rd>"
+    ports:
+      - "1435:1433"
+    networks:
+      - databases
+
+  azure-edge:
+    image: mcr.microsoft.com/azure-sql-edge
+    restart: always
+    environment:
+      ACCEPT_EULA: "Y"
+      MSSQL_SA_PASSWORD: "<YourStrong@Passw0rd>"
+    ports:
+      - "1433:1433"
+    networks:
+      - databases
+
+  mongo42:
+    image: prismagraphql/mongo-single-replica:4.2.17-bionic
+    restart: always
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: "prisma"
+      MONGO_INITDB_ROOT_PASSWORD: "prisma"
+      MONGO_PORT: 27016
+      INIT_WAIT_SEC: $INIT_WAIT_SEC
+    networks:
+      - databases
+    ports:
+      - "27016:27016"
+
+  mongo44:
     image: prismagraphql/mongo-single-replica:4.4.3-bionic
     restart: always
     environment:
       MONGO_INITDB_ROOT_USERNAME: "prisma"
       MONGO_INITDB_ROOT_PASSWORD: "prisma"
+      INIT_WAIT_SEC: $INIT_WAIT_SEC
     ports:
-      - "27019:27017"
+      - "27017:27017"
     networks:
       - databases
 
-  mongo4-single:
-    image: mongo:4
+  mongo42-single:
+    image: mongo:4.2
     restart: always
     environment:
       MONGO_INITDB_ROOT_USERNAME: "prisma"
       MONGO_INITDB_ROOT_PASSWORD: "prisma"
+      INIT_WAIT_SEC: $INIT_WAIT_SEC
+    ports:
+      - "27016:27017"
+    networks:
+      - databases
+
+  mongo44-single:
+    image: mongo:4.4
+    restart: always
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: "prisma"
+      MONGO_INITDB_ROOT_PASSWORD: "prisma"
+      INIT_WAIT_SEC: $INIT_WAIT_SEC
     ports:
       - "27017:27017"
+    networks:
+      - databases
+
+  mongo5:
+    image: prismagraphql/mongo-single-replica:5.0.3
+    restart: always
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: "prisma"
+      MONGO_INITDB_ROOT_PASSWORD: "prisma"
+      MONGO_PORT: 27018
+      INIT_WAIT_SEC: $INIT_WAIT_SEC
+    ports:
+      - "27018:27018"
     networks:
       - databases
 
@@ -242,6 +331,7 @@ services:
     environment:
       MONGO_INITDB_ROOT_USERNAME: "prisma"
       MONGO_INITDB_ROOT_PASSWORD: "prisma"
+      INIT_WAIT_SEC: $INIT_WAIT_SEC
     ports:
       - "27018:27017"
     networks:
@@ -259,27 +349,37 @@ services:
     networks:
       - databases
 
-  jaeger:
-    image: jaegertracing/all-in-one:latest
-    restart: always
+  otel:
+    image: jaegertracing/all-in-one:1.35
+    environment:
+      COLLECTOR_OTLP_ENABLED: "true"
+      COLLECTOR_ZIPKIN_HOST_PORT: ":9411"
     ports:
-      - "16686:16686" # the trace viewer (http)
-    networks:
-      - telemetry
+      - 6831:6831/udp
+      - 6832:6832/udp
+      - 5778:5778
+      - 16686:16686
+      - 4317:4317
+      - 4318:4318
+      - 14250:14250
+      - 14268:14268
+      - 14269:14269
+      - 9411:9411
 
-  otel-agent:
-    image: otel/opentelemetry-collector-dev:latest
-    command: ["--config=/etc/otel-agent-config.yaml"]
-    restart: always
+  prometheus:
+    image: prom/prometheus
     volumes:
-      - ./otel-agent-config.yaml:/etc/otel-agent-config.yaml
+      - ${PWD}/metrics/prometheus:/prometheus-data
+    command: --config.file=/prometheus-data/prometheus.yml
     ports:
-      - "4317:4317" # OTLP gRPC receiver
-    depends_on:
-      - jaeger
-    networks:
-      - telemetry
+      - 9090:9090
+  grafana:
+    image: grafana/grafana
+    volumes:
+      - ${PWD}/metrics/grafana/datasources:/etc/grafana/provisioning/datasources/
+      - ${PWD}/metrics/grafana/dashboards:/etc/grafana/provisioning/dashboards/
+    ports:
+      - 3000:3000
 
 networks:
-  databases:
-  telemetry:
+  databases: null
