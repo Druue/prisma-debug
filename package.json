@@ -5,8 +5,9 @@
     "main": "index.js",
     "scripts": {
         "latest": "npm i prisma@latest @prisma/client@latest",
+        "latest-ts": "npm i ts-node@latest typescript@latest",
         "dev": "npm i prisma@dev @prisma/client@dev",
-        "archive": "mv ./migrations ./migrations_archive",
+        "archive": "rm -rf migrations_archive && mv ./migrations ./migrations_archive",
         "test": "ts-node index.ts",
         "reset": "npx prisma migrate reset --force",
         "start-dbs": "docker-compose up -d",

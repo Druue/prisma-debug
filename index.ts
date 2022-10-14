@@ -12,45 +12,23 @@ const prisma = new PrismaClient({
 // you can do middlewares on
 // prisma.$use
 
-async function populate() {
-  // await prisma.a.create({
-  //   data: {
-  //     id: 1,
-  //     name: "a1",
-  //     a: "a",
-  //     b: "b",
-  //   },
-  // });
-  // await prisma.b.create({
-  //   data: {
-  //     a: "a",
-  //     b: "b",
-  //     A: { connect: { id: 1 } },
-  //   },
-  // });
-}
+const populate = async () => {
+  await prisma.b.create({ data: {} });
+};
 
 async function test() {
-  const files = await prisma.file.findMany({
-    where: {
-      OR: {
-        type: "audio/wav",
-        updatedAt: { lt: new Date() },
-      },
-    },
-  });
-
-  // console.log(s[0]);
+  const b = await prisma.b.findFirst();
+  console.log(b);
 }
 
 async function main() {
   populate();
-  console.log(process.env.DATABASE_URL);
+  // console.log(process.env.DATABASE_URL);
   return test();
 }
 
 main()
   .catch((e) => console.error(e))
   .finally(async () => {
-    await prisma.$disconnect;
+    prisma.$disconnect;
   });

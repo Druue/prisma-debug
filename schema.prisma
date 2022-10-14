@@ -1,6 +1,6 @@
 generator client {
-  provider      = "prisma-client-js"
-  binaryTargets = ["native", "darwin"]
+  provider        = "prisma-client-js"
+  previewFeatures = ["interactiveTransactions"]
 }
 
 datasource db {
@@ -8,12 +8,6 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model File {
-  id        Int      @id @default(autoincrement())
-  name      String?  @db.VarChar(255)
-  type      String?  @db.VarChar(255)
-  createdAt DateTime @default(now())
-  updatedAt DateTime @default(now()) @updatedAt
-
-  @@map("Files")
+model B {
+  id Bytes @id @default(dbgenerated("(uuid_to_bin(uuid(), 1))")) @db.Binary(16)
 }
