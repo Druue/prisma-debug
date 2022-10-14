@@ -1,6 +1,7 @@
 # local_debug
 
 Setup for local debugging of engines
+https://github.com/prisma/local_debug/
 
 Relevant commands `npm run`:
 - "latest": "npm i prisma@dev && npm i @prisma/client@dev",
