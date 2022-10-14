@@ -45,6 +45,7 @@ async function test() {
 
 async function main() {
   populate();
+  console.log(process.env.DATABASE_URL);
   return test();
 }
 

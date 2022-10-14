@@ -104,4 +104,5 @@ dist
 
 # Prisma 
 migrations/
+migrations_archive
 
