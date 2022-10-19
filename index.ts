@@ -12,13 +12,13 @@ const prisma = new PrismaClient({
 // you can do middlewares on
 // prisma.$use
 
-const populate = async () => {
-  await prisma.b.create({ data: {} });
+export const populate = async () => {
+  await prisma.a.create({ data: {} });
 };
 
 async function test() {
-  const b = await prisma.b.findFirst();
-  console.log(b);
+  const a = await prisma.a.findFirst();
+  console.log(a);
 }
 
 async function main() {
