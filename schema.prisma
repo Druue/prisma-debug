@@ -8,6 +8,10 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model B {
-  id Bytes @id @default(dbgenerated("(uuid_to_bin(uuid(), 1))")) @db.Binary(16)
+model User1 {
+  id Int @id @default(autoincrement())
+}
+
+model User2 {
+  id Int @id @default(0)
 }
