@@ -9,9 +9,11 @@
         "dev": "npm i prisma@dev @prisma/client@dev",
         "archive": "rm -rf migrations_archive && mv ./migrations ./migrations_archive",
         "test": "ts-node index.ts",
-        "reset": "npx prisma migrate reset --force",
         "start-dbs": "docker-compose up -d",
-        "migrate": "npx prisma migrate dev"
+        "migrate": "npx prisma migrate dev",
+        "push": "npx prisma db push",
+        "pull": "npx prisma db pull",
+        "reset": "npx prisma migrate reset --force"
     },
     "keywords": [],
     "author": "",
