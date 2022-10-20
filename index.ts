@@ -13,16 +13,29 @@ const prisma = new PrismaClient({
 // prisma.$use
 
 const populate = async () => {
-  await prisma.b.create({ data: {} });
+  await prisma.letting.create({
+    data: {
+      lettingid: "UPPERCASE",
+    },
+  });
+
+  await prisma.lettingSchedule.create({
+    data: {
+      lettingid: "uppercase",
+      contid: "some-contid",
+    },
+  });
 };
 
 async function test() {
-  const b = await prisma.b.findFirst();
-  console.log(b);
+  const lettings = await prisma.letting.findMany({
+    include: { lettingSchedules: true },
+  });
+  console.log(lettings);
 }
 
 async function main() {
-  populate();
+  await populate();
   // console.log(process.env.DATABASE_URL);
   return test();
 }

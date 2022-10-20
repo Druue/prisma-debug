@@ -1,6 +1,5 @@
 generator client {
-  provider        = "prisma-client-js"
-  previewFeatures = ["interactiveTransactions"]
+  provider = "prisma-client-js"
 }
 
 datasource db {
@@ -8,6 +7,21 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model B {
-  id Bytes @id @default(dbgenerated("(uuid_to_bin(uuid(), 1))")) @db.Binary(16)
+model Letting {
+  lettingid        String            @id @db.VarChar(45)
+  lettingdate      DateTime?         @db.Timestamp(0)
+  lettingSchedules LettingSchedule[]
+
+  @@map("letting")
+}
+
+model LettingSchedule {
+  lettingid   String   @db.VarChar(45)
+  contid      String   @db.VarChar(45)
+  callorder   String?  @db.VarChar(45)
+  iswithdrawn Boolean?
+  letting     Letting  @relation(fields: [lettingid], references: [lettingid])
+
+  @@id([lettingid, contid])
+  @@map("lettingschedule")
 }
