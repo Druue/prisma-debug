@@ -1,4 +1,4 @@
-import { PrismaClient } from "@prisma/client";
+import { Prisma, PrismaClient } from "@prisma/client";
 
 const prisma = new PrismaClient({
   log: ["query"],
@@ -12,23 +12,32 @@ const prisma = new PrismaClient({
 // you can do middlewares on
 // prisma.$use
 
-const populate = async () => {
-  await prisma.b.create({ data: {} });
-};
+// const populate = async () => {
+//   await prisma.b.create({ data: {} });
+// };
 
-async function test() {
-  const b = await prisma.b.findFirst();
-  console.log(b);
+// async function test() {
+//   const b = await prisma.b.findFirst();
+//   console.log(b);
+// }
+
+export async function openFileFromGithubRepo(
+  filePath: string,
+  backgroundJobId: string,
+  _cb: (file: File) => void
+): Promise<void> {
+  const queryStatement = Prisma.sql`SELECT (gitTree.obj ->> 'path') as path, (gitTree.obj ->> 'content_url') as content_url FROM "BackgroundJobResult" bgr LEFT JOIN LATERAL jsonb_array_elements(bgr."data") WITH ORDINALITY AS gitTree(obj, pos) ON true WHERE (gitTree.obj ->> 'path') = ${filePath} AND "backgroundJobId" = ${backgroundJobId}::UUID;`;
+
+  const queryResult = await prisma.$queryRaw<
+    Array<{ path: string; content_url: string }>
+  >(queryStatement);
 }
 
-async function main() {
-  populate();
-  // console.log(process.env.DATABASE_URL);
-  return test();
-}
+const main = async () =>
+  openFileFromGithubRepo("filePath", "backgroundJobId", () => null);
 
 main()
-  .catch((e) => console.error(e))
+  .catch(console.error)
   .finally(async () => {
     prisma.$disconnect;
   });

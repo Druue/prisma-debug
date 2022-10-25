@@ -1,13 +1,52 @@
 generator client {
   provider        = "prisma-client-js"
-  previewFeatures = ["interactiveTransactions"]
+  previewFeatures = ["filterJson"]
 }
 
 datasource db {
-  provider = "mysql"
+  provider = "postgresql"
   url      = env("DATABASE_URL")
 }
 
-model B {
-  id Bytes @id @default(dbgenerated("(uuid_to_bin(uuid(), 1))")) @db.Binary(16)
+model BackgroundJob {
+  id           Int                    @id @default(autoincrement())
+  jobName      String
+  jobId        String                 @unique @db.Uuid
+  jobPayload   BackgroundJobPayload?
+  jobStatus    String
+  jobProgress  BackgroundJobProgress?
+  jobResult    BackgroundJobResult?
+  jobError     String?
+  jobCreatedAt DateTime               @default(now())
+  jobUpdatedAt DateTime               @updatedAt
+}
+
+model BackgroundJobPayload {
+  id              Int           @id @default(autoincrement())
+  data            Json
+  backgroundJob   BackgroundJob @relation(fields: [backgroundJobId], references: [id])
+  backgroundJobId Int           @unique
+  createdAt       DateTime      @default(now())
+  updatedAt       DateTime      @updatedAt
+}
+
+model BackgroundJobResult {
+  id              Int           @id @default(autoincrement())
+  data            Json          @db.JsonB
+  backgroundJob   BackgroundJob @relation(fields: [backgroundJobId], references: [jobId])
+  backgroundJobId String        @unique @db.Uuid
+  createdAt       DateTime      @default(now())
+  updatedAt       DateTime      @updatedAt
+}
+
+model BackgroundJobProgress {
+  id              Int           @id @default(autoincrement())
+  status          String        @default("processing")
+  currentStep     Int
+  totalSteps      Int
+  message         String
+  backgroundJob   BackgroundJob @relation(fields: [backgroundJobId], references: [jobId])
+  backgroundJobId String        @unique @db.Uuid
+  createdAt       DateTime      @default(now())
+  updatedAt       DateTime      @updatedAt
 }
