@@ -1,37 +1,47 @@
+// Run with 
+//   npx prisma format && npx prisma db push --force-reset && npm run test
+
 import { PrismaClient } from "@prisma/client";
 
 const prisma = new PrismaClient({
   log: ["query"],
 });
 
-// you can do stuff in the client constructor
-// const prisma = new PrismaClient({
-//   __internal: { enginePath: '/Users/matthias/repos/work/prisma-engine/target/debug/query-engine' }
-// } as any )
-
-// you can do middlewares on
-// prisma.$use
-
 const populate = async () => {
+  console.log('➡️ Inserting letting')
   await prisma.letting.create({
-    data: {
-      lettingid: "UPPERCASE",
-    },
-  });
+    data: { lettingid: 'lettingid' },
+  })
 
-  await prisma.lettingSchedule.create({
-    data: {
-      lettingid: "uppercase",
-      contid: "some-contid",
-    },
-  });
+  console.log('letting updated\n\n\n')
+
+  console.log('➡️ Inserting letting schedule')
+  await prisma.lettingSchedule.createMany({
+    data: [
+      { 
+        lettingid: 'lettingid',
+        contid: 'contis00'
+      },
+      {
+        lettingid: 'LETTINGID',
+        contid: 'contis01'
+      }
+    ]
+  })
+  console.log('lettingSchedule updated\n\n\n')
 };
 
 async function test() {
-  const lettings = await prisma.letting.findMany({
-    include: { lettingSchedules: true },
-  });
-  console.log(lettings);
+  console.log('🔎 Querying for letting')
+  const result = await prisma.letting.findMany({
+    include: {
+      lettingSchedules: true
+    },
+    where: {
+      lettingid: 'lettingid',
+    }
+  })
+  console.log(JSON.stringify(result, null, 2));
 }
 
 async function main() {
@@ -41,7 +51,5 @@ async function main() {
 }
 
 main()
-  .catch((e) => console.error(e))
-  .finally(async () => {
-    prisma.$disconnect;
-  });
+  .catch(console.error)
+  // .finally(prisma.$disconnect);
