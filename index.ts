@@ -34,7 +34,7 @@ export async function openFileFromGithubRepo(
 }
 
 const main = async () =>
-  openFileFromGithubRepo("filePath", "backgroundJobId", () => null);
+  openFileFromGithubRepo("filePath", "ee988485-1e4c-4d9f-af9b-146a9418ccd7", () => null);
 
 main()
   .catch(console.error)
