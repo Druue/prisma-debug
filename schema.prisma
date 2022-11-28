@@ -1,13 +1,25 @@
 generator client {
-  provider        = "prisma-client-js"
-  previewFeatures = ["interactiveTransactions"]
+  provider = "prisma-client-js"
 }
 
 datasource db {
-  provider = "mysql"
+  provider = "postgresql"
   url      = env("DATABASE_URL")
 }
 
-model B {
-  id Bytes @id @default(dbgenerated("(uuid_to_bin(uuid(), 1))")) @db.Binary(16)
+model ArweaveTx {
+  id           String @id @default(uuid())
+  txId         String
+  txCommitment String
+  ID           ID?
+}
+
+model ID {
+  id          String    @id
+  identifier  String
+  provider    String
+  default     Json
+  others      Json[]
+  arweaveTxId String    @unique
+  arweaveTx   ArweaveTx @relation(fields: [arweaveTxId], references: [id])
 }
