@@ -1,13 +1,52 @@
 generator client {
   provider        = "prisma-client-js"
-  previewFeatures = ["interactiveTransactions"]
+  previewFeatures = ["referentialIntegrity"]
 }
 
 datasource db {
-  provider = "mysql"
-  url      = env("DATABASE_URL")
+  provider     = "mysql"
+  url          = env("DATABASE_URL")
+  relationMode = "prisma"
 }
 
-model B {
-  id Bytes @id @default(dbgenerated("(uuid_to_bin(uuid(), 1))")) @db.Binary(16)
+model Participation {
+  id          String    @id @default(cuid())
+  userId      String
+  promotionId String
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+  user        User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  promotion   Promotion @relation(fields: [promotionId], references: [id], onDelete: Cascade)
+  scores      Score[]
+
+  @@unique([promotionId, userId])
+}
+
+model Score {
+  id              String         @id @default(cuid())
+  promotionId     String
+  employeeId      String?
+  participationId String?
+  value           Int
+  createdAt       DateTime       @default(now())
+  updatedAt       DateTime       @updatedAt
+  promotion       Promotion      @relation(fields: [promotionId], references: [id], onDelete: Cascade)
+  employee        Employee?      @relation(fields: [employeeId], references: [id], onDelete: SetNull)
+  participation   Participation? @relation(fields: [participationId], references: [id], onDelete: Cascade)
+}
+
+model User {
+  id            String          @id
+  Participation Participation[]
+}
+
+model Promotion {
+  id            String          @id
+  Participation Participation[]
+  Score         Score[]
+}
+
+model Employee {
+  id    String  @id
+  Score Score[]
 }

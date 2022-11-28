@@ -13,12 +13,33 @@ const prisma = new PrismaClient({
 // prisma.$use
 
 const populate = async () => {
-  await prisma.b.create({ data: {} });
+  const res = await prisma.score.update({
+    where: {
+      id: "score-id"
+    },
+    data: {
+      participation: {
+        connectOrCreate: {
+          where: {
+            promotionId_userId: {
+              promotionId: "score.promotionId",
+              userId: "session.user.id"
+            },
+            create: {
+              promotionId: "score.promotionId",
+              userId: "session.user.id"
+            }
+          }
+        }
+      }
+    }
+  })
+
 };
 
 async function test() {
-  const b = await prisma.b.findFirst();
-  console.log(b);
+  // const b = await prisma.b.findFirst();
+  // console.log(b);
 }
 
 async function main() {
