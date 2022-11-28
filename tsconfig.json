@@ -5,6 +5,8 @@
       "DOM"
     ],
     "esModuleInterop": true,
-    "noUnusedLocals": false
+    "noUnusedLocals": false,
+    "target": "ES2020",
+    "moduleResolution": "node"
   }
 }
