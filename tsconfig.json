@@ -1,7 +1,10 @@
 {
-    "compilerOptions": {
-      "lib": ["ESNext", "DOM"],
-      "esModuleInterop": true,
-      "noUnusedLocals": false
-    }
+  "compilerOptions": {
+    "lib": [
+      "ESNext",
+      "DOM"
+    ],
+    "esModuleInterop": true,
+    "noUnusedLocals": false
   }
+}
