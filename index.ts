@@ -13,7 +13,7 @@ const prisma = new PrismaClient({
 // prisma.$use
 
 const populate = async () => {
-  await prisma.b.create({ data: { some: "field", other: "otherField" } });
+  await prisma.b.create({ data: { some: "newField", other: "otherField" } });
 };
 
 async function test() {

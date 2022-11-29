@@ -15,6 +15,7 @@ model B {
 
 enum Enumeration {
   field
+  newField
 }
 
 enum OtherEnum {
