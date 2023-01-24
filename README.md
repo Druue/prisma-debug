@@ -15,7 +15,7 @@ Makefile contains commands to spin up dbs in docker.
 
 # Repro steps
 1. npm i
-2. npm run migrate -- this should generate the following sql:
+2. npx prisma migrate dev --create-only -- this should generate the following sql:
 ```sql
 -- CreateTable
 CREATE TABLE "B" (
@@ -30,7 +30,22 @@ CREATE TABLE "B" (
 CREATE INDEX "B_companyId_text_idx" ON "B" USING GIN ("companyId" , "text" );
 ```
 
-3. npm run pull
+3. add to the generated sql file the following:
+```sql
+CREATE EXTENSION IF NOT EXISTS pg_trgm;
+CREATE EXTENSION IF NOT EXISTS btree_gin;
+```
+
+4. run npx prisma migrate dev, this generates:
+```sql
+-- DropIndex
+DROP INDEX "B_companyId_text_idx";
+
+-- CreateIndex
+CREATE INDEX "B_companyId_text_idx" ON "B" USING GIN ("companyId" , "text" );
+```
+
+5. npx prisma db pull
 ```prisma
 @@index([companyId(ops: raw("")), text(ops: raw(""))], type: Gin)
 ```

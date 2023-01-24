@@ -26,5 +26,8 @@
     "dependencies": {
         "@prisma/client": "^4.9.0",
         "dotenv": "^16.0.3"
+    },
+    "enginesOverride": {
+        "folder": "~/src/prisma-engines-fork/target/release"
     }
 }
