@@ -54,3 +54,6 @@ becomes
 @@index([companyId, text], type: Gin)
 ```
 
+Using the engines fix outlined [here](https://github.com/prisma/prisma-engines/pull/3625) and then defined in .env, fixes the the migration bug whereby the SQL outlined in part 4 gets generated.
+
+
