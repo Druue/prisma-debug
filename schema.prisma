@@ -1,13 +1,17 @@
 generator client {
   provider        = "prisma-client-js"
-  previewFeatures = ["interactiveTransactions"]
+  previewFeatures = ["postgresqlExtensions"]
 }
 
 datasource db {
-  provider = "mysql"
+  provider = "postgresql"
   url      = env("DATABASE_URL")
 }
 
 model B {
-  id Bytes @id @default(dbgenerated("(uuid_to_bin(uuid(), 1))")) @db.Binary(16)
+  id Int @id @default(autoincrement())
+  text String[]
+  companyId Int[]
+
+  @@index([companyId(ops: raw("")), text(ops: raw(""))], type: Gin)
 }
