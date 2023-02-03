@@ -1,5 +1,6 @@
 generator client {
   provider        = "prisma-client-js"
+  previewFeatures = ["views"]
 }
 
 datasource db {
@@ -7,6 +8,23 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model A {
-  id Int @id
+model User {
+  id      Int      @id @default(autoincrement())
+  email   String   @unique
+  name    String?
+  profile Profile?
+}
+
+model Profile {
+  id     Int    @id @default(autoincrement())
+  bio    String
+  userId Int    @unique
+  user   User   @relation(fields: [userId], references: [id])
+}
+
+view UserInfo {
+  id    Int    @unique
+  email String
+  name  String
+  bio   String
 }

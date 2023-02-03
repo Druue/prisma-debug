@@ -13,16 +13,22 @@ const prisma = new PrismaClient({
 // prisma.$use
 
 const populate = async () => {
-  await prisma.a.create({ data: { id: 1 } });
+  await prisma.user.create({
+    data: {
+      id: 0,
+      email: "email0",
+      name: "name0",
+    }
+  })
 };
 
 async function test() {
-  const a = await prisma.a.findFirst();
+  const a = await prisma.userInfo.findFirst()
   console.log(a);
 }
 
 async function main() {
-  populate();
+  await populate();
   // console.log(process.env.DATABASE_URL);
   return test();
 }
