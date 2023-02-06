@@ -13,7 +13,7 @@ const prisma = new PrismaClient({
 // prisma.$use
 
 const populate = async () => {
-  await prisma.a.create({ data: { id: 1 } });
+  await prisma.a.create();
 };
 
 async function test() {
@@ -22,7 +22,7 @@ async function test() {
 }
 
 async function main() {
-  populate();
+  await populate();
   // console.log(process.env.DATABASE_URL);
   return test();
 }
