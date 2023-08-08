@@ -1,4 +1,8 @@
-import { PrismaClient } from "@prisma/client";
+// import { PrismaClient } from "@prisma/client";
+import { PrismaClient, Post } from "@generated/prisma-repro";
+// import { User } from "@generated/prisma-repro";
+
+// const post: Post = null;
 
 const prisma = new PrismaClient({
   log: ["query"],
@@ -13,11 +17,15 @@ const prisma = new PrismaClient({
 // prisma.$use
 
 const populate = async () => {
-  await prisma.a.create();
+  await prisma.user.create({
+    data: {
+      email: "email",
+    },
+  });
 };
 
 async function test() {
-  const a = await prisma.a.findFirst();
+  const a: User = await prisma.user.findFirst();
   console.log(a);
 }
 
@@ -30,5 +38,5 @@ async function main() {
 main()
   .catch((e) => console.error(e))
   .finally(async () => {
-    prisma.$disconnect;
+    // prisma.$disconnect;
   });
