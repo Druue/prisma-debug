@@ -1,6 +1,8 @@
 // import { PrismaClient } from "@prisma/client";
-import { PrismaClient, Post } from "@generated/prisma-repro";
+// import { PrismaClient, Post } from "@generated/prisma-repro";
 // import { User } from "@generated/prisma-repro";
+
+import { PrismaClient, User } from "./@generated/prisma-repro";
 
 // const post: Post = null;
 
