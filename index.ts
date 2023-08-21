@@ -13,11 +13,11 @@ const prisma = new PrismaClient({
 // prisma.$use
 
 const populate = async () => {
-  await prisma.a.create();
+  // await prisma.post.create({ data: {} });
 };
 
 async function test() {
-  const a = await prisma.a.findFirst();
+  const a = "await.prisma";
   console.log(a);
 }
 

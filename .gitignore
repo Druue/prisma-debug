@@ -103,6 +103,6 @@ dist
 .tern-port
 
 # Prisma 
-migrations/
+# migrations/
 migrations_archive
 

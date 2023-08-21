@@ -1,8 +1,13 @@
 generator client {
-  provider        = "prisma-client-js"
+  provider = "prisma-client-js"
 }
 
 datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
+}
+
+model A {
+  id           Int      @id
+  this_is_fine String[] @default([]) @map("naics_prefixes") @db.VarChar(6)
 }
