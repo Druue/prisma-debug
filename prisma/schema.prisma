@@ -1,0 +1,32 @@
+generator client {
+  provider        = "prisma-client-js"
+  previewFeatures = ["views"]
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = "file:./my.db"
+}
+
+model Contract {
+  id       Int     @id @default(autoincrement())
+  report   Report? @relation(fields: [reportId], references: [id])
+  reportId Int?    @map("report_id")
+
+  @@map("contracts")
+}
+
+model Report {
+  id        Int        @id @default(autoincrement())
+  name      String     @unique
+  contracts Contract[]
+
+  @@map("reports")
+}
+
+/// The underlying view does not contain a valid unique identifier and can therefore currently not be handled by Prisma Client.
+view print_closure {
+  id Int?
+
+  @@ignore
+}

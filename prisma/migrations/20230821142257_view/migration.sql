@@ -1,0 +1,1 @@
+CREATE VIEW print_closure AS SELECT id FROM contracts;
