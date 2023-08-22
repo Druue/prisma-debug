@@ -23,8 +23,16 @@ async function test() {
   const x = await prisma.$queryRaw<
     { value: bigint }[]
   >`SELECT SUM(1::BIGINT)::BIGINT AS value`;
-  console.log(`b (not cast): ${b[0].value}`);
-  console.log(`x (cast): ${x[0].value}`);
+
+  const properBigint: bigint = 1n;
+  console.log(
+    `b (not cast): ${b[0].value}, type is ${typeof b[0]
+      .value}, should be ${typeof properBigint}`
+  );
+  console.log(
+    `x (cast): ${x[0].value}, type is ${typeof x[0]
+      .value}, should be ${typeof properBigint}`
+  );
 }
 
 async function main() {
