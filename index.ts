@@ -13,16 +13,18 @@ const prisma = new PrismaClient({
 // prisma.$use
 
 const populate = async () => {
-  await prisma.a.create();
+  // await prisma.a.create();
 };
 
 async function test() {
-  const a = await prisma.a.findFirst();
+  const a = await prisma.subscription.delete({
+    where: { keys: { is: { auth: req.params.id } } },
+  });
   console.log(a);
 }
 
 async function main() {
-  await populate();
+  // await populate();
   // console.log(process.env.DATABASE_URL);
   return test();
 }

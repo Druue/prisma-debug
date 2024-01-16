@@ -3,6 +3,18 @@ generator client {
 }
 
 datasource db {
-  provider = "postgresql"
+  provider = "mongodb"
   url      = env("DATABASE_URL")
+}
+
+type SubscriptionKeys {
+  auth   String
+  p256dh String
+}
+
+model subscription {
+  id             String           @id @default(auto()) @map("_id") @db.ObjectId
+  endpoint       String
+  expirationTime Float
+  keys           SubscriptionKeys
 }
