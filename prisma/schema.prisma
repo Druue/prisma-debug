@@ -7,14 +7,11 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-type SubscriptionKeys {
-  auth   String
-  p256dh String
+type B {
+  auth String
 }
 
-model subscription {
-  id             String           @id @default(auto()) @map("_id") @db.ObjectId
-  endpoint       String
-  expirationTime Float
-  keys           SubscriptionKeys
+model A {
+  id   String @id @map("_id")
+  keys B
 }

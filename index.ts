@@ -17,8 +17,8 @@ const populate = async () => {
 };
 
 async function test() {
-  const a = await prisma.subscription.delete({
-    where: { keys: { is: { auth: req.params.id } } },
+  const a = await prisma.a.delete({
+    where: { keys: { is: { auth: "auth" } } },
   });
   console.log(a);
 }
