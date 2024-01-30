@@ -1,6 +1,9 @@
-import { PrismaClient } from "@prisma/client";
+import { Prisma, PrismaClient } from "@prisma/client";
+
+const connectionString = `${process.env.DATABASE_URL}`;
 
 const prisma = new PrismaClient({
+  // adapter,
   log: ["query"],
 });
 
@@ -13,17 +16,18 @@ const prisma = new PrismaClient({
 // prisma.$use
 
 const populate = async () => {
-  await prisma.a.create();
+  await prisma.user.findFirst();
 };
 
 async function test() {
-  const a = await prisma.a.findFirst();
-  console.log(a);
+  const user = await prisma.$transaction(
+    async (tx) => await tx.user.findFirst()
+  );
+  console.log(user);
 }
 
 async function main() {
   await populate();
-  // console.log(process.env.DATABASE_URL);
   return test();
 }
 

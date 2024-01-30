@@ -2,9 +2,13 @@
   "compilerOptions": {
     "lib": [
       "ESNext",
-      "DOM"
+      "DOM",
+      "DOM.Iterable"
     ],
     "esModuleInterop": true,
-    "noUnusedLocals": false
+    "noUnusedLocals": false,
+    // Testing
+    "moduleResolution": "bundler",
+    "module": "esnext",
   }
 }
