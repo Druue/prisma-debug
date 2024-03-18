@@ -12,7 +12,7 @@ model Game {
   name String
 
   level   Level  @relation(fields: [levelId], references: [id])
-  levelId String
+  levelId String @db.ObjectId
 }
 
 model Level {
