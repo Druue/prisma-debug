@@ -174,6 +174,9 @@ start-mongodb_4_2:
 start-mongodb_4_4:
 	docker-compose -f docker-compose.yml up -d --remove-orphans mongo44
 
+start-mongodb_6:
+	docker-compose -f docker-compose.yml up -d --remove-orphans mongo6
+
 dev-mongodb_4_4: start-mongodb_4_4
 	cp $(CONFIG_PATH)/mongodb44 $(CONFIG_FILE)
 

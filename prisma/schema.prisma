@@ -3,6 +3,21 @@ generator client {
 }
 
 datasource db {
-  provider = "postgresql"
+  provider = "mongodb"
   url      = env("DATABASE_URL")
+}
+
+model Game {
+  id   String @id @default(auto()) @map("_id") @db.ObjectId
+  name String
+
+  level   Level  @relation(fields: [levelId], references: [id])
+  levelId String
+}
+
+model Level {
+  id   String @id @default(auto()) @map("_id") @db.ObjectId
+  name String @unique
+
+  games Game[]
 }

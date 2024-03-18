@@ -13,11 +13,56 @@ const prisma = new PrismaClient({
 // prisma.$use
 
 const populate = async () => {
-  await prisma.a.create();
+  await prisma.level.create({
+    data: {
+      id: "633e96bee022c9818ca1f264",
+      name: "beginner",
+    },
+  });
+  await prisma.game.createMany({
+    data: [
+      {
+        id: "633e96bfe022c9818ca1f267",
+        name: "discrete",
+        levelId: "633e96bee022c9818ca1f264",
+        // level: { id: "633e96bee022c9818ca1f264", name: "beginner" },
+      },
+      {
+        id: "633e96bfe022c9818ca1f268",
+        name: "blind",
+        levelId: "633e96bee022c9818ca1f264",
+        // level: { id: "633e96bee022c9818ca1f264", name: "beginner" },
+      },
+      {
+        id: "633e96bfe022c9818ca1f269",
+        name: "detailed",
+        levelId: "633e96bee022c9818ca1f264",
+        // level: { id: "633e96bee022c9818ca1f264", name: "beginner" },
+      },
+      {
+        id: "633e96bfe022c9818ca1f26a",
+        name: "villainous",
+        levelId: "633e96bee022c9818ca1f264",
+        // level: { id: "633e96bee022c9818ca1f264", name: "beginner" },
+      },
+      {
+        id: "633e96bfe022c9818ca1f26b",
+        name: "lawful",
+        levelId: "633e96bee022c9818ca1f264",
+        // level: { id: "633e96bee022c9818ca1f264", name: "beginner" },
+      },
+    ],
+  });
 };
 
 async function test() {
-  const a = await prisma.a.findFirst();
+  const a = await prisma.game.findFirst({
+    where: {
+      level: {
+        name: "beginner",
+      },
+    },
+  });
   console.log(a);
 }
 
