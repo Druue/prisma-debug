@@ -12,3 +12,7 @@ Relevant commands `npm run`:
 
 Makefile contains commands to spin up dbs in docker.
 .env file contains env vars to link custom binaries and also the db credentials.
+
+## Reproduction
+- `npx prisma migrate dev`
+- `npm run test`

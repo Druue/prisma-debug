@@ -13,11 +13,15 @@ const prisma = new PrismaClient({
 // prisma.$use
 
 const populate = async () => {
-  await prisma.a.create();
+  await prisma.labels.create({
+    data: {
+      id: BigInt(11111111111111111111),
+    },
+  });
 };
 
 async function test() {
-  const a = await prisma.a.findFirst();
+  const a = await prisma.labels.findFirst();
   console.log(a);
 }
 

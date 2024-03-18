@@ -1,8 +1,13 @@
 generator client {
   provider = "prisma-client-js"
+  // previewFeatures = ["JsonProtocol"]
 }
 
 datasource db {
-  provider = "postgresql"
+  provider = "mysql"
   url      = env("DATABASE_URL")
+}
+
+model labels {
+  id BigInt @id @default(autoincrement()) @db.UnsignedBigInt
 }
