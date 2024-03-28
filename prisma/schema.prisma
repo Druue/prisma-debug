@@ -6,3 +6,9 @@ datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
 }
+
+model Test {
+  id String @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+
+  caseInsensitiveField String @unique @db.Citext
+}
