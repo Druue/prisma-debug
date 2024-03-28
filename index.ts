@@ -16,6 +16,8 @@ const caseInsensitiveField = "hello world";
 const id = "9df0f936-51d6-4c55-8e01-5144e588a8a1";
 
 const populate = async () => {
+  await prisma.test.deleteMany();
+
   await prisma.test.createMany({
     data: {
       id,
@@ -25,31 +27,31 @@ const populate = async () => {
 };
 
 async function test() {
-  // const list = [0, 0] as const;
-  // console.log("Case insensitive field", {
-  //   findFirst: await Promise.all(
-  //     list.map(() =>
-  //       prisma.test.findFirst({
-  //         where: { caseInsensitiveField: caseInsensitiveField.toUpperCase() },
-  //       })
-  //     )
-  //   ),
-  //   findUnique: await Promise.all(
-  //     list.map(() =>
-  //       prisma.test.findUnique({
-  //         where: { caseInsensitiveField: caseInsensitiveField.toUpperCase() },
-  //       })
-  //     )
-  //   ),
-  // });
-  // console.log("Normal field", {
-  //   findFirst: await Promise.all(
-  //     list.map(() => prisma.test.findFirst({ where: { id } }))
-  //   ),
-  //   findUnique: await Promise.all(
-  //     list.map(() => prisma.test.findUnique({ where: { id } }))
-  //   ),
-  // });
+  const list = [0, 0] as const;
+  console.log("Case insensitive field", {
+    findFirst: await Promise.all(
+      list.map(() =>
+        prisma.test.findFirst({
+          where: { caseInsensitiveField: caseInsensitiveField.toUpperCase() },
+        })
+      )
+    ),
+    findUnique: await Promise.all(
+      list.map(() =>
+        prisma.test.findUnique({
+          where: { caseInsensitiveField: caseInsensitiveField.toUpperCase() },
+        })
+      )
+    ),
+  });
+  console.log("Normal field", {
+    findFirst: await Promise.all(
+      list.map(() => prisma.test.findFirst({ where: { id } }))
+    ),
+    findUnique: await Promise.all(
+      list.map(() => prisma.test.findUnique({ where: { id } }))
+    ),
+  });
 }
 
 async function main() {
