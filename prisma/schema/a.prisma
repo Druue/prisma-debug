@@ -1,0 +1,7 @@
+model A {
+    id Int @id
+}
+
+model B {
+    id Int @id
+}
