@@ -4,9 +4,10 @@
     "description": "",
     "main": "index.js",
     "scripts": {
-        "latest:rel": "npm i prisma@latest @prisma/client@latest",
-        "latest:dev": "npm i prisma@dev @prisma/client@dev",
-        "latest:ts": "npm i ts-node@latest typescript@latest",
+        "prisma:lat": "npm i prisma@latest @prisma/client@latest",
+        "prisma:ver": "npm i prisma@$PRISMA_VERSION @prisma/client@$PRISMA_VERSION",
+        "prisma:dev": "npm i prisma@dev @prisma/client@dev",
+        "ts:lat": "npm i ts-node@latest typescript@latest",
         "archive": "rm -rf migrations_archive && mv ./migrations ./migrations_archive",
         "test": "ts-node index.ts",
         "start-dbs": "docker-compose up -d",
@@ -21,12 +22,12 @@
     "devDependencies": {
         "@prisma/prisma-schema-wasm": "5.13.0-7.87bc6b811aafa9b7bcdb787a2b8c8b5728cbbfb0",
         "@prisma/schema-files-loader": "5.13.0-dev.22",
-        "prisma": "^5.13.0-dev.27",
+        "prisma": "^5.13.0-dev.28",
         "ts-node": "^10.9.2",
         "typescript": "^5.4.5"
     },
     "dependencies": {
-        "@prisma/client": "^5.13.0-dev.27",
+        "@prisma/client": "^5.13.0-dev.28",
         "dotenv": "^16.0.3"
     }
 }
