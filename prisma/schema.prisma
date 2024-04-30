@@ -1,6 +1,6 @@
 generator client {
-  provider = "prisma-client-js"
-  // previewFeatures = ["prismaSchemaFolder"]
+  provider        = "prisma-client-js"
+  previewFeatures = ["driverAdapters", "relationJoins"]
 }
 
 datasource db {
@@ -8,11 +8,7 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model A {
-  id Int @id
-}
-
-model B {
-  id    Int    @id
-  field String
+model BaseUser {
+  id    String @id @db.Uuid
+  intId BigInt @unique
 }
