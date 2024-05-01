@@ -1,18 +1,38 @@
 generator client {
   provider = "prisma-client-js"
-  // previewFeatures = ["prismaSchemaFolder"]
 }
 
 datasource db {
-  provider = "postgresql"
-  url      = env("DATABASE_URL")
+  provider = "sqlite"
+  url      = "file:./dev.db"
 }
 
-model A {
-  id Int @id
+model User {
+  id       String @id @default(cuid())
+  name     String
+  email    String @unique
+  password String @unique
 }
 
-model B {
-  id    Int    @id
-  field String
+model Invoice {
+  id         String    @id @default(cuid())
+  amount     Int
+  status     String
+  date       String
+  customer   Customer? @relation(fields: [customerId], references: [id])
+  customerId String?
+}
+
+model Customer {
+  id        String    @id @default(cuid())
+  name      String
+  email     String
+  image_url String
+  invoices  Invoice[]
+}
+
+model Revenue {
+  id      String @id @default(cuid())
+  month   String
+  revenue Int
 }
