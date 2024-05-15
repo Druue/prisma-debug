@@ -15,22 +15,29 @@ const prisma = new PrismaClient({
 // prisma.$use
 
 const populate = async () => {
-  await prisma.a.create({
+  await prisma.user.create({
     data: {
-      id: 0,
+      username: "username",
+      email: `email@bar`,
     },
-  });
+  })
 };
 
 async function test() {
-  const a = await prisma.a.findFirst();
+  const a = await prisma.user.findMany({
+    where: {
+      email: {
+        search: '"email@bar"'  // outer single quotes, search term wrapped in double quotes
+      }
+    }
+  })
   console.log(a);
 }
 
 async function main() {
   // console.log(process.env.DATABASE_URL);
 
-  // await populate();
+  await populate();
   return test();
 
   // const prismaSchema = await loadSchemaFiles("./prisma/schema");

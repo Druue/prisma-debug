@@ -1,18 +1,25 @@
 generator client {
-  provider = "prisma-client-js"
-  // previewFeatures = ["prismaSchemaFolder"]
+  provider        = "prisma-client-js"
+  previewFeatures = ["fullTextIndex", "fullTextSearch"]
 }
 
 datasource db {
-  provider = "postgresql"
+  provider = "mysql"
   url      = env("DATABASE_URL")
 }
 
-model A {
-  id Int @id
-}
+model User {
+  id              Int     @id @default(autoincrement())
+  username        String  @db.VarChar(255)
+  email           String  @db.VarChar(255)
+  avatar          String? @db.VarChar(255)
+  password        String  @default("1") @db.VarChar(255)
+  friends         User[]  @relation("friends")
+  friendsRelation User[]  @relation("friends")
+  hashRT          String? @db.VarChar(255)
 
-model B {
-  id    Int    @id
-  field String
+  @@fulltext([username])
+  @@fulltext([email])
+  @@fulltext([username, email])
+  @@map("users")
 }
