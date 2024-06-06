@@ -1,0 +1,2 @@
+-- AlterTable
+ALTER TABLE `A` ALTER COLUMN `lastSeen` DROP DEFAULT;

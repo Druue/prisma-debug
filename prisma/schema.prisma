@@ -4,15 +4,11 @@ generator client {
 }
 
 datasource db {
-  provider = "postgresql"
+  provider = "mysql"
   url      = env("DATABASE_URL")
 }
 
 model A {
-  id Int @id
-}
-
-model B {
-  id    Int    @id
-  field String
+  id       Int       @id
+  lastSeen DateTime?
 }
