@@ -1,6 +1,5 @@
 generator client {
   provider = "prisma-client-js"
-  // previewFeatures = ["prismaSchemaFolder"]
 }
 
 datasource db {
@@ -9,10 +8,6 @@ datasource db {
 }
 
 model A {
-  id Int @id
-}
-
-model B {
-  id    Int    @id
-  field String
+  id         Int   @id @default(autoincrement())
+  fav_series Int[] @default([])
 }
