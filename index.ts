@@ -5,23 +5,18 @@ const prisma = new PrismaClient({
 });
 
 const populate = async () => {
-  await prisma.a.upsert({
-    create: {
-      fav_series: [],
-    },
-    update: {
-      fav_series: [],
-    },
-    where: {
-      id: 0,
-    },
-  });
+  const fav_series = [1, 2, 3, null, 1, 2];
+  const [a] = await prisma.$transaction([
+    prisma.a.upsert({
+      create: { id: 0, fav_series },
+      update: { fav_series },
+      where: { id: 0 },
+    }),
+  ]);
+  console.log(a);
 };
 
-async function test() {
-  const a = await prisma.a.findFirst();
-  console.log(a);
-}
+async function test() {}
 
 async function main() {
   await populate();
