@@ -7,12 +7,3 @@ datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
 }
-
-model A {
-  id Int @id
-}
-
-model B {
-  id    Int    @id
-  field String
-}
